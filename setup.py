@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='automaton2bpmn',
-    version='0.0.1',
+    version='0.0.3',
     license='MIT',
     author="Davi Romero de Vasconcelos",
     author_email='daviromero@ufc.br',
@@ -20,7 +20,8 @@ setup(
     keywords='Theory of Computing, Automata Theory, Languages, Lambda-Calculus, Recursive Function (Kleene), Teaching Theory of Computing, Educational Software', 
     install_requires=[
         'graphviz',
-        'teocomp'
+        'teocomp',
+        'pm4py'
       ],
 
 )
