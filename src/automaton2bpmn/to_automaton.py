@@ -1,5 +1,4 @@
 from teocomp.nfa_e import NFA_E
-from teocomp.dfa import DFA
 
 def removeAllSequencesOfRepetitions(l):
     indexes_repetitions = []

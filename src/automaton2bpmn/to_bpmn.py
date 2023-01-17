@@ -1,6 +1,6 @@
 #############################  TO BPMN ##############################
 from pm4py.objects.bpmn.obj import BPMN
-from to_automaton import to_nfa_minimum_path_traces_occurrences, to_nfa_minimum_path, to_nfa_minimum_path_join_traces
+from automaton2bpmn.to_automaton import to_nfa_minimum_path_traces_occurrences, to_nfa_minimum_path, to_nfa_minimum_path_join_traces
 
 def dfa_to_bpmn(dfa, remove_unnecessary_gateways=True,start_event_label="i_1"):
   bpmn = BPMN()
