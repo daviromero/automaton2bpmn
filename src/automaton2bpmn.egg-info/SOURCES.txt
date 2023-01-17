@@ -1,0 +1,12 @@
+README.md
+license.txt
+setup.cfg
+setup.py
+src/automaton2bpmn/__init__.py
+src/automaton2bpmn/to_automaton.py
+src/automaton2bpmn/to_bpmn.py
+src/automaton2bpmn.egg-info/PKG-INFO
+src/automaton2bpmn.egg-info/SOURCES.txt
+src/automaton2bpmn.egg-info/dependency_links.txt
+src/automaton2bpmn.egg-info/requires.txt
+src/automaton2bpmn.egg-info/top_level.txt

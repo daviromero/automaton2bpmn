@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: automaton2bpmn
+Version: 0.0.3
+Summary: Automaton2bpmn is a library for converting automata (teocomp package) to bpmn.
+Home-page: https://github.com/daviromero/automaton2bpmn
+Author: Davi Romero de Vasconcelos
+Author-email: daviromero@ufc.br
+License: MIT
+Keywords: Theory of Computing,Automata Theory,Languages,Lambda-Calculus,Recursive Function (Kleene),Teaching Theory of Computing,Educational Software
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+License-File: license.txt
+
+# Automaton2bpmn 
+Automaton2bpmn is a library for converting automata (teocomp package) to bpmn.
+
