@@ -177,9 +177,9 @@ def to_nfa_minimum_path_join_traces(lLog,prefix_name="s", rework=True):
           if rework:
             for i in range(len(traces)):
                 if trace == traces[i]: 
-                for t_n_t in trace_new_transitions:
-                    if not t_n_t in traces_indices[i]:
-                    traces_indices[i].append(t_n_t)
+                    for t_n_t in trace_new_transitions:
+                        if not t_n_t in traces_indices[i]:
+                            traces_indices[i].append(t_n_t)
         else:
           traces.append(trace)
           if rework:
