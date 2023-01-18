@@ -113,7 +113,7 @@ def to_nfa_history(lLog, history=-1):
     return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
 
 
-def to_nfa_minimum_path(lLog,prefix_name="s"):
+def to_nfa_minimum_path(lLog,prefix_name="s", rework=True):
 
     """ Convert a list of traces (logs) as a NFA.
 
@@ -143,15 +143,75 @@ def to_nfa_minimum_path(lLog,prefix_name="s"):
             else:
                 transitions.setdefault((prefix_name+str((i-1)), trace[k]), set()).add(prefix_name+str(i))
             i += 1
-        for t in trace_new_transitions:
-            pos_dest = pos_i + t[1] 
-            if (t[0]==0): 
-                transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'0')
-            else:
-                pos_ini = pos_i+t[0]-1
-                transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'{}'.format((pos_ini)))
+        if rework:
+            for t in trace_new_transitions:
+                pos_dest = pos_i + t[1] 
+                if (t[0]==0): 
+                    transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'0')
+                else:
+                    pos_ini = pos_i+t[0]-1
+                    transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'{}'.format((pos_ini)))
 
     return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
+
+def to_nfa_minimum_path_join_traces(lLog,prefix_name="s", rework=True):
+
+    """ Convert a list of traces (logs) as a NFA.
+
+    :param: List of Traces (e.g. [ ['a','b'], ['a','b','e'], ['a','e'] ]);
+    :return: *(dict)* representing a NFA.
+    """
+    states = set()
+    accepting_states = set()
+    alphabet = set()
+    transitions = {}  # key [state ∈ states, action ∈ alphabet]
+    #                   value [arriving state ∈ states]
+
+    initial_state = prefix_name+'0'
+    states.add(initial_state)
+    traces = []
+    traces_indices = []
+    for j in range(len(lLog)):
+        trace, trace_new_transitions = removeAllSequencesOfRepetitions(lLog[j])
+        if trace in traces:
+          if rework:
+            for i in range(len(traces)):
+                if trace == traces[i]: 
+                for t_n_t in trace_new_transitions:
+                    if not t_n_t in traces_indices[i]:
+                    traces_indices[i].append(t_n_t)
+        else:
+          traces.append(trace)
+          if rework:
+              traces_indices.append(trace_new_transitions)
+
+    i = 1 # state
+    for j in range(len(traces)):
+        pos_i = i
+        trace = traces[j]
+        trace_new_transitions = traces_indices[j]
+        for k in range(len(trace)):
+            states.add(prefix_name+str(i))
+            if(k==len(trace)-1):
+                accepting_states.add(prefix_name+str(i))
+            alphabet.add(trace[k])
+           
+            if(k==0):
+                transitions.setdefault((prefix_name+'0', trace[k]), set()).add(prefix_name+str(i))
+            else:
+                transitions.setdefault((prefix_name+str((i-1)), trace[k]), set()).add(prefix_name+str(i))
+            i += 1
+        if rework:
+            for t in trace_new_transitions:
+                pos_dest = pos_i + t[1] 
+                if (t[0]==0): 
+                    transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'0')
+                else:
+                    pos_ini = pos_i+t[0]-1
+                    transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'{}'.format((pos_ini)))
+
+    return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
+
 
 def get_occurrences(dfa, lLog):
     s = dfa.startState
@@ -244,58 +304,4 @@ def to_nfa_minimum_path_traces_occurrences(traces, traces_indices,prefix_name="s
     return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
 
 
-def to_nfa_minimum_path_join_traces(lLog,prefix_name="s"):
-
-    """ Convert a list of traces (logs) as a NFA.
-
-    :param: List of Traces (e.g. [ ['a','b'], ['a','b','e'], ['a','e'] ]);
-    :return: *(dict)* representing a NFA.
-    """
-    states = set()
-    accepting_states = set()
-    alphabet = set()
-    transitions = {}  # key [state ∈ states, action ∈ alphabet]
-    #                   value [arriving state ∈ states]
-
-    initial_state = prefix_name+'0'
-    states.add(initial_state)
-    traces = []
-    traces_indices = []
-    for j in range(len(lLog)):
-        trace, trace_new_transitions = removeAllSequencesOfRepetitions(lLog[j])
-        if trace in traces:
-          for i in range(len(traces)):
-            if trace == traces[i]: 
-              for t_n_t in trace_new_transitions:
-                if not t_n_t in traces_indices[i]:
-                  traces_indices[i].append(t_n_t)
-        else:
-          traces.append(trace)
-          traces_indices.append(trace_new_transitions)
-
-    i = 1 # state
-    for j in range(len(traces)):
-        pos_i = i
-        trace = traces[j]
-        trace_new_transitions = traces_indices[j]
-        for k in range(len(trace)):
-            states.add(prefix_name+str(i))
-            if(k==len(trace)-1):
-                accepting_states.add(prefix_name+str(i))
-            alphabet.add(trace[k])
-           
-            if(k==0):
-                transitions.setdefault((prefix_name+'0', trace[k]), set()).add(prefix_name+str(i))
-            else:
-                transitions.setdefault((prefix_name+str((i-1)), trace[k]), set()).add(prefix_name+str(i))
-            i += 1
-        for t in trace_new_transitions:
-            pos_dest = pos_i + t[1] 
-            if (t[0]==0): 
-                transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'0')
-            else:
-                pos_ini = pos_i+t[0]-1
-                transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'{}'.format((pos_ini)))
-
-    return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
 
