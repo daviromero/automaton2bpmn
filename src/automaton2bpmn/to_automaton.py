@@ -154,7 +154,7 @@ def to_nfa_minimum_path(lLog,prefix_name="s", rework=True):
 
     return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
 
-def to_nfa_minimum_path_join_traces(lLog,prefix_name="s", rework=True):
+def to_nfa_minimum_path_join_traces(lLog, prefix_name="s", rework=True):
 
     """ Convert a list of traces (logs) as a NFA.
 
@@ -189,7 +189,6 @@ def to_nfa_minimum_path_join_traces(lLog,prefix_name="s", rework=True):
     for j in range(len(traces)):
         pos_i = i
         trace = traces[j]
-        trace_new_transitions = traces_indices[j]
         for k in range(len(trace)):
             states.add(prefix_name+str(i))
             if(k==len(trace)-1):
@@ -202,7 +201,7 @@ def to_nfa_minimum_path_join_traces(lLog,prefix_name="s", rework=True):
                 transitions.setdefault((prefix_name+str((i-1)), trace[k]), set()).add(prefix_name+str(i))
             i += 1
         if rework:
-            for t in trace_new_transitions:
+            for t in traces_indices[j]:
                 pos_dest = pos_i + t[1] 
                 if (t[0]==0): 
                     transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'0')
