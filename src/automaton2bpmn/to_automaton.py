@@ -1,4 +1,5 @@
 from teocomp.nfa_e import NFA_E
+from teocomp.nfa_bb import NFA_BB
 
 def removeAllSequencesOfRepetitions(l):
     indexes_repetitions = []
@@ -46,7 +47,7 @@ def removeAllSequencesOfRepetitions(l):
     return l,indexes_repetitions
 
 
-def to_nfa(lLog, prefix_name="s"):
+def to_nfa(lLog, prefix_name="s", nfa_bb=False):
 
     """ Convert a list of traces (logs) as a NFA.
 
@@ -75,11 +76,13 @@ def to_nfa(lLog, prefix_name="s"):
                 transitions.setdefault((prefix_name+str((i-1)), lLog[j][k]), set()).add(prefix_name+str(i))
             i += 1
 
+    if nfa_bb:
+        return NFA_BB(states,alphabet,initial_state,transitions,accepting_states)    
     return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
 
 
 
-def to_nfa_history(lLog, history=-1):
+def to_nfa_history(lLog, history=-1, nfa_bb=False):
 
     """ Convert a list of traces (logs) as a NFA, regarding the history of events.
 
@@ -87,7 +90,6 @@ def to_nfa_history(lLog, history=-1):
     :return: *(dict)* representing a NFA.
     """
     states = set()
-    initial_states = set()
     accepting_states = set()
     alphabet = set()
     transitions = {}  # key [state ∈ states, action ∈ alphabet]
@@ -110,10 +112,12 @@ def to_nfa_history(lLog, history=-1):
             transitions.setdefault((state_inicio, lLog[j][k]), set()).add(state_prox)           
             state_inicio = state_prox
 
+    if nfa_bb:
+        return NFA_BB(states,alphabet,initial_state,transitions,accepting_states)    
     return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
 
 
-def to_nfa_minimum_path(lLog,prefix_name="s", rework=True):
+def to_nfa_minimum_path(lLog,prefix_name="s", rework=True, nfa_bb=False):
 
     """ Convert a list of traces (logs) as a NFA.
 
@@ -152,9 +156,11 @@ def to_nfa_minimum_path(lLog,prefix_name="s", rework=True):
                     pos_ini = pos_i+t[0]-1
                     transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'{}'.format((pos_ini)))
 
+    if nfa_bb:
+        return NFA_BB(states,alphabet,initial_state,transitions,accepting_states)    
     return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
 
-def to_nfa_minimum_path_join_traces(lLog, prefix_name="s", rework=True):
+def to_nfa_minimum_path_join_traces(lLog, prefix_name="s", rework=True, nfa_bb=False):
 
     """ Convert a list of traces (logs) as a NFA.
 
@@ -208,7 +214,8 @@ def to_nfa_minimum_path_join_traces(lLog, prefix_name="s", rework=True):
                 else:
                     pos_ini = pos_i+t[0]-1
                     transitions.setdefault((prefix_name+'{}'.format(pos_dest), ''), set()).add(prefix_name+'{}'.format((pos_ini)))
-
+    if nfa_bb:
+        return NFA_BB(states,alphabet,initial_state,transitions,accepting_states)    
     return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
 
 
