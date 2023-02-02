@@ -310,4 +310,27 @@ def to_nfa_minimum_path_traces_occurrences(traces, traces_indices,prefix_name="s
     return NFA_E(states,alphabet,initial_state,transitions,accepting_states)
 
 
-
+def get_trace_frequency(lLog):
+    dict_log = {}
+    for l in lLog:
+        str_l = str(l)
+        if str_l in dict_log:
+            dict_log[str_l] = (dict_log[str_l][0], dict_log[str_l][1]+1)
+        else:
+            dict_log[str_l] = (l, 1)
+    list_l = list(dict_log.values())
+    list_l.sort(key=lambda tup: tup[1], reverse=True)
+    return list_l
+def get_most_frequent_traces(lLog, percentage=0.5):
+  l_traces = get_trace_frequency(lLog)
+  total = 0
+  for (t,n) in l_traces:
+    total += n
+  num = 0.0
+  l_most_frequent_traces = []
+  for (t,n) in l_traces:
+    l_most_frequent_traces.append((t,n))
+    num += n
+    if (num/total)>=percentage:
+      return l_most_frequent_traces
+  return l_most_frequent_traces
