@@ -321,6 +321,7 @@ def get_trace_frequency(lLog):
     list_l = list(dict_log.values())
     list_l.sort(key=lambda tup: tup[1], reverse=True)
     return list_l
+
 def get_most_frequent_traces(lLog, percentage=0.5):
   l_traces = get_trace_frequency(lLog)
   total = 0
