@@ -333,5 +333,5 @@ def get_most_frequent_traces(lLog, percentage=0.5):
     l_most_frequent_traces.append((t,n))
     num += n
     if (num/total)>=percentage:
-      return l_most_frequent_traces
-  return l_most_frequent_traces
+      return l_most_frequent_traces, num/total
+  return l_most_frequent_traces, 0
